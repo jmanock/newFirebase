@@ -206,6 +206,7 @@
       email:email,
       profile_picture:imageUrl
     });
+    
   }
 
   window.addEventListener('load', function(data){
@@ -218,7 +219,7 @@
       firebase.auth().signOut();
     });
 
-    firebase.auth().onSuthStateChanged(function(user){
+    firebase.auth().onAuthStateChanged(function(user){
       if(user){
         splashPage.style.display = 'none';
         writeUserData(user.uid, user.displayName, user.email, user.photoURL);
@@ -233,7 +234,7 @@
       if(messageInput.value && titleInput.value){
         var postText = messageInput.value;
         messageInput.value = '';
-        var userId  firebase.auth().currentUser.uid;
+        var userId = firebase.auth().currentUser.uid;
         firebase.database().ref('/users/'+userId).once('value').then(function(snapshot){
           var username = snapshot.val().username;
           variteNewPost(firebase.auth().currentUser.uid, firebase.auth().currentUser.displayName, firebase.auth().currentUser.photoURL, titleInput.value, postText).then(function(){
