@@ -7,7 +7,7 @@
     - message that its saved
   */
   $(document).ready(function(){
-    $('button').on('click',function(){
+    $('#post').on('click',function(){
       var yes = $('textarea').val();
       if(yes === ''){
         console.log('there has to be something here stupid');
@@ -21,32 +21,35 @@
       var postData ={
         message:words
       };
+      var dataPosts ={
+
+      };
       var newPostKey = firebase.database().ref().child('posts').push().key;
       var updates ={};
       updates['/posts/' + newPostKey] = postData;
-      updates['/user-posts/'+newPostKey] = postData;
+      updates['/user-posts/'+newPostKey] = dataPosts;
       return firebase.database().ref().update(updates);
     }
 
     // Function to load the content
     function load(){
-      var myUserId = firebase.auth().currentUser.uid;
-      var topUserPostsRef = firebase.database().ref('user-posts/'+myUserId).orderByChild('starCount');
       var recentPostsRef = firebase.database().ref('posts').limitToLast(100);
-      var userPostsRef = firebase.database().ref('user-posts/'+myUserId);
-      var fetchPosts = function(postRef, sectionElement){
+      var userPostsRef = firebase.database().ref('user-posts');
+      var fetchPosts = function(postsRef){
         postsRef.on('child_added', function(data){
-          var author = data.val().author;
-          var containerElement = sectionElement.getElementsByClassName('posts-container')[0];
-            containerElement.insertBefore(
-              createPostElement(data.key, data.val().title, data.val().body, author, data.val().uid, data.val().authorPic), containerElement.firstChild
-            );
+          //This Works just need to put it on screen
+          // console.log(data.val().message);
+          console.log(data.val().message);
         });
       };
-      fetchPosts(topUserPostRef, topUserPostsSection);
-      fetchPosts(recentPostsRef, recentPostssection);
-      fetchPosts(userPostsRef, userPostsSection);
+      // this works calling recentPostRef
+      fetchPosts(recentPostsRef);
+      fetchPosts(userPostsRef);
     }
     load();
+
+    $('#signIn').on('click', function(){
+      
+    });
   });
 })();
