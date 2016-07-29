@@ -7,6 +7,7 @@
     - message that its saved
   */
   $(document).ready(function(){
+    $('#signOut').hide();
     $('#post').on('click',function(){
       var yes = $('textarea').val();
       if(yes === ''){
@@ -52,7 +53,24 @@
     });
 
     function signIn(){
+      var provider = new firebase.auth.GoogleAuthProvider();
 
+      firebase.auth().signInWithPopup(provider);
+      firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+          var userId = firebase.auth().currentUser.uid;
+          console.log(userId);
+          $('#signIn').hide();
+          $('#signOut').show();
+          //console.log(user.uid, user.displayName, user.email, user.photoURL);
+        }
+      });
     }
+
+    $('#signOut').on('click', function(){
+      firebase.auth().signOut();
+      $('#signIn').show();
+      $('#signOut').hide();
+    });
   });
 })();
