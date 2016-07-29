@@ -37,19 +37,22 @@
       var userPostsRef = firebase.database().ref('user-posts');
       var fetchPosts = function(postsRef){
         postsRef.on('child_added', function(data){
-          //This Works just need to put it on screen
-          // console.log(data.val().message);
-          console.log(data.val().message);
+          var showSomething = data.val().message;
+          $('.showSomething').append('<li>'+showSomething+'</li>');
         });
       };
       // this works calling recentPostRef
       fetchPosts(recentPostsRef);
-      fetchPosts(userPostsRef);
+      //fetchPosts(userPostsRef);
     }
     load();
 
     $('#signIn').on('click', function(){
-      
+      signIn();
     });
+
+    function signIn(){
+
+    }
   });
 })();
