@@ -2,9 +2,10 @@
   'use strict';
 
   /*
-    - show whats in fb
-    - log in
-    - message that its saved
+    * redo how its saved
+    * get names out of fb
+    * make it manditory to sign in
+    * stupid couter more like twitter
   */
   $(document).ready(function(){
     $('#signOut').hide();
