@@ -5,7 +5,6 @@
     * redo how its saved
     * get names out of fb
     * make it manditory to sign in
-    * stupid couter more like twitter
   */
   $(document).ready(function(){
     $('#signOut').hide();
@@ -73,5 +72,12 @@
       $('#signIn').show();
       $('#signOut').hide();
     });
+    function updateCounter(){
+      var count = 140 - $('#message').val().length;
+      $('.countdown').text(count + ' characters remaining');
+    }
+    updateCounter();
+    $('#message').change(updateCounter);
+    $('#message').keyup(updateCounter);
   });
 })();
