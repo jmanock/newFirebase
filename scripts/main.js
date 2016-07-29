@@ -3,6 +3,8 @@
 
   /*
     * redo how its saved
+      - problem
+        sending vars from two different functions to the same function wont work this way
     * get names out of fb
     * make it manditory to sign in
   */
@@ -18,17 +20,21 @@
       }
 
     });
-    function save(words){
+    function save(uid, username, picture, words){
       var postData ={
         message:words
       };
-      var dataPosts ={
-
-      };
+      // var dataPosts ={
+      //   message:words,
+      //   author:username,
+      //   uid:uid,
+      //   authorPic:picture
+      // };
       var newPostKey = firebase.database().ref().child('posts').push().key;
       var updates ={};
       updates['/posts/' + newPostKey] = postData;
-      updates['/user-posts/'+newPostKey] = dataPosts;
+      //updates['/user-post'+uid+'/'+newPostKey] = dataPosts;
+      console.log('username '+username+'picture '+picture+'uid '+uid+' words '+words);
       return firebase.database().ref().update(updates);
     }
 
@@ -42,7 +48,7 @@
           $('.showSomething').append('<li>'+showSomething+'</li>');
         });
       };
-      // this works calling recentPostRef
+
       fetchPosts(recentPostsRef);
       //fetchPosts(userPostsRef);
     }
@@ -59,7 +65,7 @@
       firebase.auth().onAuthStateChanged(function(user){
         if(user){
           var userId = firebase.auth().currentUser.uid;
-          console.log(userId);
+          save(user.uid, user.displayName, user.photoURL);
           $('#signIn').hide();
           $('#signOut').show();
           //console.log(user.uid, user.displayName, user.email, user.photoURL);
@@ -72,13 +78,12 @@
       $('#signIn').show();
       $('#signOut').hide();
     });
+
     function updateCounter(){
       var count = 140 - $('#message').val().length;
       $('.countdown').text(count);
-      if(count <= 0){
-        console.log('HELLO FRIEND');
-      }
     }
+
     updateCounter();
     $('#message').change(updateCounter);
     $('#message').keyup(updateCounter);
