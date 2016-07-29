@@ -74,7 +74,10 @@
     });
     function updateCounter(){
       var count = 140 - $('#message').val().length;
-      $('.countdown').text(count + ' characters remaining');
+      $('.countdown').text(count);
+      if(count <= 0){
+        console.log('HELLO FRIEND');
+      }
     }
     updateCounter();
     $('#message').change(updateCounter);
