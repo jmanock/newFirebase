@@ -16,13 +16,14 @@
     function signIn(){
       var provider = new firebase.auth.GoogleAuthProvider();
 
-      firebase.auth().aignInWithPopup(provider);
+      firebase.auth().signInWithPopup(provider);
       firebase.auth().onAuthStateChanged(function(user){
         if(user){
           var userId = firebase.auth().currentUser.uid;
-          $('.posts').show();
+          $('.post').show();
           $('#signIn').hide();
           $('#signOut').show();
+          console.log('welcome '+user.displayName);
         }
       });
     }
