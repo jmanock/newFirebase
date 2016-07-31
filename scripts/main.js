@@ -2,16 +2,17 @@
   'use strict';
   $(document).ready(function(){
     /* Todo
-      * show posts
       * show users
       * style change
-      * save user
       * save posts
       * save user/posts
       PROBLEMS
       * different functions to save user and posts not the same
         - save user save posts with user id?
       * think of a better way to do this maybe on function?
+      BUGS
+      * shows post twice if it loads to fast
+      * remove doesnt work just keeps adding or deleting everything
     */
 
     $('#signIn').on('click', function(){
@@ -32,7 +33,10 @@
           $('.post').show();
           $('#signIn').hide();
           $('#signOut').show();
+          $('.showPosts').show();
           console.log('welcome '+user.displayName);
+          writeUserData(user.uid, user.displayName, user.photoURL);
+          startDatabaseQueried();
         }
       });
     }
@@ -42,7 +46,28 @@
       $('#signIn').show();
       $('#signOut').hide();
       $('.post').hide();
+      $('.words').remove();
       console.log('GoodBye');
+    }
+
+    function writeUserData(uid, displayName, photo){
+      firebase.database().ref('users/'+uid).set({
+        user:displayName,
+        pic:photo
+      });
+    }
+
+    function startDatabaseQueried(){
+      var recentPostRef = firebase.database().ref('posts');
+
+      var fetchPosts = function(postsRef){
+        postsRef.on('child_added', function(data){
+          var author = data.val().author;
+          var posts = data.val().message;
+          $('.showPosts').append('<li class="words">'+posts+'</li>');
+        });
+      };
+      fetchPosts(recentPostRef);
     }
 
     function updateCounter(){
