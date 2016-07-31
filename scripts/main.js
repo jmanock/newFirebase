@@ -5,6 +5,9 @@
       * show posts
       * show users
       * style change
+      * save user
+      * save posts
+      * save user/posts
       PROBLEMS
       * different functions to save user and posts not the same
         - save user save posts with user id?
@@ -39,6 +42,7 @@
       $('#signIn').show();
       $('#signOut').hide();
       $('.post').hide();
+      console.log('GoodBye');
     }
 
     function updateCounter(){
