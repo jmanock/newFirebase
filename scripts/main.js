@@ -16,22 +16,21 @@
 
     function signIn(){
       var provider = new firebase.auth.GoogleAuthProvider();
-
       firebase.auth().signInWithPopup(provider);
-      firebase.auth().onAuthStateChanged(function(user){
-
-          var userId = firebase.auth().currentUser.uid;
-          var author = user.displayName;
-          $('.post').show();
-          $('#signIn').hide();
-          $('#signOut').show();
-          $('.showPosts').show();
-          console.log('welcome '+author);
-          writeUserData(user.uid, author, user.photoURL);
-          startDatabaseQueried();
-        
-      });
     }
+    firebase.auth().onAuthStateChanged(function(user){
+
+        var userId = firebase.auth().currentUser.uid;
+        var author = user.displayName;
+        $('.post').show();
+        $('#signIn').hide();
+        $('#signOut').show();
+        $('.showPosts').show();
+        console.log('welcome '+author);
+        writeUserData(user.uid, author, user.photoURL);
+        startDatabaseQueried();
+
+    });
 
     function signOut(){
       firebase.auth().signOut();
