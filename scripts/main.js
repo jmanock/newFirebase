@@ -1,18 +1,11 @@
 (function(){
   'use strict';
   $(document).ready(function(){
-    /* Todo
-      * show users
-      * style change
-      * save posts
-      * save user/posts
-      PROBLEMS
-      * different functions to save user and posts not the same
-        - save user save posts with user id?
-      * think of a better way to do this maybe on function?
-      BUGS
-      * shows post twice if it loads to fast
-      * remove doesnt work just keeps adding or deleting everything
+    /* NOTES
+      * LOGG IN BUTTON CLICK
+        - writeUserData(uid, displayName, phono)
+      * ONSUBMIT BUTTON CLICK
+        - writeNewPost(uid, displayName, photo, text)
     */
 
     $('#signIn').on('click', function(){
@@ -30,12 +23,13 @@
       firebase.auth().onAuthStateChanged(function(user){
         if(user){
           var userId = firebase.auth().currentUser.uid;
+          var author = user.displayName;
           $('.post').show();
           $('#signIn').hide();
           $('#signOut').show();
           $('.showPosts').show();
-          console.log('welcome '+user.displayName);
-          writeUserData(user.uid, user.displayName, user.photoURL);
+          console.log('welcome '+author);
+          writeUserData(user.uid, author, user.photoURL);
           startDatabaseQueried();
         }
       });
@@ -68,6 +62,34 @@
         });
       };
       fetchPosts(recentPostRef);
+    }
+
+    $('#share').on('click', function(){
+      share();
+    });
+
+    function share(){
+      var userId = firebase.auth().currentUser.uid;
+      var postText = $('textarea').val();
+      firebase.database().ref('/users/'+userId).once('value').then(function(snapshot){
+        var username = snapshot.val().username;
+        writeNewPost(firebase.auth().currentUser.uid, firebase.auth().currentUser.displayName, firebase.auth().currentUser.photoURL, postText);
+
+      });
+    }
+
+    function writeNewPost(uid, username, picture, body){
+      var postData = {
+        author:username,
+        uid:uid,
+        body:body,
+        authorPic:picture
+      };
+      var newPostKey = firebase.database().ref().child('posts').push().key;
+      var updates = {};
+      updates['/posts/'+newPostKey] = postData;
+      updates['/user-posts/'+uid+'/'+newPostKey] = postData;
+      return firebase.database().ref().update(updates);
     }
 
     function updateCounter(){
