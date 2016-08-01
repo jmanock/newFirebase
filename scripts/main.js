@@ -69,9 +69,12 @@
           for(var i = 0; i < recipientsArray.length -1; i++){
             if(recipientsArray[i+1] == recipientsArray[i]){
               reportRecipientsDuplicate.push(recipientsArray[i]);
+              console.log(reportRecipientsDuplicate);
             }
+
           }
-          console.log(reportRecipientsDuplicate);
+
+          $('.showOnce').append('<li>'+ reportRecipientsDuplicate+'</li>');
         });
 
       };
