@@ -19,7 +19,6 @@
       firebase.auth().signInWithPopup(provider);
     }
     firebase.auth().onAuthStateChanged(function(user){
-      console.log(user);
         var userId = firebase.auth().currentUser.uid;
         var author = user.displayName;
         $('.post').show();
@@ -72,8 +71,8 @@
 
     }
 
-    firebase.database().ref('user-posts/').on('value', function(snapshot){
-      console.log(snapshot);
+    firebase.database().ref('user-posts/'+userId).on('value', function(snapshot){
+      console.log(snapshot.val());
     });
 
     $('#share').on('click', function(){
