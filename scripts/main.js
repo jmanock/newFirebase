@@ -2,7 +2,8 @@
   'use strict';
   $(document).ready(function(){
     /* FUCKS
-      - Not sure why it adds everything twice or more
+      * Not sure why it adds everything twice or more
+        - lets try to put a wait on the load
     */
 
     $('#signIn').on('click', function(){
@@ -18,7 +19,7 @@
 
       firebase.auth().signInWithPopup(provider);
       firebase.auth().onAuthStateChanged(function(user){
-        if(user){
+
           var userId = firebase.auth().currentUser.uid;
           var author = user.displayName;
           $('.post').show();
@@ -28,7 +29,7 @@
           console.log('welcome '+author);
           writeUserData(user.uid, author, user.photoURL);
           startDatabaseQueried();
-        }
+        
       });
     }
 
@@ -54,6 +55,7 @@
       var recentPostsRef = firebase.database().ref('posts');
 
       var fetchPosts = function(postRef){
+        var somethingKewl = [];
         postRef.on('child_added', function(data){
           var author = data.val().author;
           var posts = data.val().body;
@@ -61,7 +63,11 @@
           // would like to have it user/message with out repeating the same user everytime
           $('.showUsers').append('<li>'+author+'</li>');
           $('.showPosts').append('<li>'+posts+'</li>');
+
+          somethingKewl.push(author);
+
         });
+        console.log(somethingKewl);
       };
 
       fetchPosts(userPostsRef);
