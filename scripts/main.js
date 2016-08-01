@@ -1,11 +1,8 @@
 (function(){
   'use strict';
   $(document).ready(function(){
-    /* NOTES
-      * LOGG IN BUTTON CLICK
-        - writeUserData(uid, displayName, phono)
-      * ONSUBMIT BUTTON CLICK
-        - writeNewPost(uid, displayName, photo, text)
+    /* FUCKS
+      - Not sure why it adds everything twice or more
     */
 
     $('#signIn').on('click', function(){
@@ -52,16 +49,21 @@
     }
 
     function startDatabaseQueried(){
-      var recentPostRef = firebase.database().ref('posts');
+      var myUserId = firebase.auth().currentUser.uid;
+      var userPostsRef = firebase.database().ref('user-posts/'+myUserId);
+      var recentPostsRef = firebase.database().ref('posts');
 
-      var fetchPosts = function(postsRef){
-        postsRef.on('child_added', function(data){
+      var fetchPosts = function(postRef){
+        postRef.on('child_added', function(data){
           var author = data.val().author;
-          var posts = data.val().message;
-          $('.showPosts').append('<li class="words">'+posts+'</li>');
+          var posts = data.val().body;
+
+          $('.showUsers').append('<li>'+author+'</li>');
+          $('.showPosts').append('<li>'+posts+'</li>');
         });
       };
-      fetchPosts(recentPostRef);
+      fetchPosts(recentPostsRef);
+      fetchPosts(userPostsRef);
     }
 
     $('#share').on('click', function(){
