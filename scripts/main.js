@@ -58,11 +58,12 @@
           var author = data.val().author;
           var posts = data.val().body;
 
+          // would like to have it user/message with out repeating the same user everytime
           $('.showUsers').append('<li>'+author+'</li>');
           $('.showPosts').append('<li>'+posts+'</li>');
         });
       };
-      fetchPosts(recentPostsRef);
+
       fetchPosts(userPostsRef);
     }
 
