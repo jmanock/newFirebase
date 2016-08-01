@@ -64,12 +64,19 @@
           $('.showPosts').append('<li>'+posts+'</li>');
 
           somethingKewl.push(author);
-
+          var recipientsArray = somethingKewl.sort();
+          var reportRecipientsDuplicate = [];
+          for(var i = 0; i < recipientsArray.length -1; i++){
+            if(recipientsArray[i+1] == recipientsArray[i]){
+              reportRecipientsDuplicate.push(recipientsArray[i]);
+            }
+          }
+          console.log(reportRecipientsDuplicate);
         });
-        console.log(somethingKewl);
-      };
 
-      fetchPosts(userPostsRef);
+      };
+      fetchPosts(recentPostsRef);
+      //fetchPosts(userPostsRef);
     }
 
     $('#share').on('click', function(){
