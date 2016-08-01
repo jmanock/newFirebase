@@ -19,7 +19,7 @@
       firebase.auth().signInWithPopup(provider);
     }
     firebase.auth().onAuthStateChanged(function(user){
-
+      console.log(user);
         var userId = firebase.auth().currentUser.uid;
         var author = user.displayName;
         $('.post').show();
@@ -54,51 +54,27 @@
       var recentPostsRef = firebase.database().ref('posts');
 
       var fetchPosts = function(postRef){
-        //var somethingKewl = [];
-        var author;
+
         postRef.on('child_added', function(data){
-           author = data.val().author;
+          var author = data.val().author;
           var posts = data.val().body;
 
           // would like to have it user/message with out repeating the same user everytime
           $('.showUsers').append('<li>'+author+'</li>');
           $('.showPosts').append('<li>'+posts+'</li>');
 
-            //somethingKewl.push(author);
-          // var recipientsArray = somethingKewl.sort();
-          // var reportRecipientsDuplicate = [];
-          // for(var i = 0; i < recipientsArray.length -1; i++){
-          //   if(recipientsArray[i+1] == recipientsArray[i]){
-          //     reportRecipientsDuplicate.push(recipientsArray[i]);
-          //   }
-          //   return reportRecipientsDuplicate;
-          // }
-          //
-          //
-          // $('.showOnce').append('<li>'+ reportRecipientsDuplicate+'</li>');
-
         });
 
       };
-      
-      fetchPosts(recentPostsRef);
 
-      //fetchPosts(userPostsRef);
+      //fetchPosts(recentPostsRef);
+      fetchPosts(userPostsRef);
+
     }
 
-
-
-      function knew(){
-        var recentPostsRef = firebase.database().ref('posts');
-        var somethingKewl = [];
-        recentPostsRef.on('child_added',function(data){
-          var author = data.val().author;
-          somethingKewl.push(author);
-        });
-        console.log(somethingKewl);
-      }
-
-
+    firebase.database().ref('user-posts/').on('value', function(snapshot){
+      console.log(snapshot);
+    });
 
     $('#share').on('click', function(){
       share();
