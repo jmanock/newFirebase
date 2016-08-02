@@ -77,12 +77,16 @@
       something.push(snapshot.val().uid);
       for(var i = 0; i<something.length; i++){
         sucks(something[i]);
+        // Maybe ill send the id and names from here
       }
     });
 
     function sucks(x){
       firebase.database().ref('user-posts/'+x).on('child_added', function(snapshot){
-        console.log(snapshot.val());
+        console.log(snapshot.val().body, snapshot.val().author);
+        // this works but still need it to be user --> post, post user --> post, post
+        // not user --> post user --> post
+        // Whats happening is I am skipping the uid and going striagth to posts
       });
     }
 
