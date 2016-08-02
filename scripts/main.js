@@ -43,7 +43,8 @@
     function writeUserData(uid, displayName, photo){
       firebase.database().ref('users/'+uid).set({
         user:displayName,
-        pic:photo
+        pic:photo,
+        uid:uid
       });
     }
 
@@ -71,9 +72,20 @@
 
     }
 
-    firebase.database().ref('user-posts/').on('child_added', function(snapshot){
-      console.log(snapshot.val());
+    firebase.database().ref('users/').on('child_added', function(snapshot){
+      var something = [];
+      something.push(snapshot.val().uid);
+      for(var i = 0; i<something.length; i++){
+        sucks(something[i]);
+      }
     });
+
+    function sucks(x){
+      firebase.database().ref('user-posts/'+x).on('child_added', function(snapshot){
+        console.log(snapshot.val());
+      });
+    }
+
 
 
     $('#share').on('click', function(){
