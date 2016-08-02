@@ -71,9 +71,10 @@
 
     }
 
-    firebase.database().ref('user-posts/').on('value', function(snapshot){
+    firebase.database().ref('user-posts/').on('child_added', function(snapshot){
       console.log(snapshot.val());
     });
+
 
     $('#share').on('click', function(){
       share();
