@@ -71,7 +71,7 @@
 
     }
 
-    firebase.database().ref('user-posts/'+userId).on('value', function(snapshot){
+    firebase.database().ref('user-posts/').on('value', function(snapshot){
       console.log(snapshot.val());
     });
 
