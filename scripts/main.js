@@ -74,20 +74,29 @@
 
     firebase.database().ref('users/').on('child_added', function(snapshot){
       var something = [];
+      var uid = snapshot.val().uid;
+      var name = snapshot.val().user;
       something.push(snapshot.val().uid);
       for(var i = 0; i<something.length; i++){
         sucks(something[i]);
         // Maybe ill send the id and names from here
+        // No that wont work with an object threw a for each
       }
     });
 
     function sucks(x){
+      var somethingKewl = [];
       firebase.database().ref('user-posts/'+x).on('child_added', function(snapshot){
         console.log(snapshot.val().body, snapshot.val().author);
+        
         // this works but still need it to be user --> post, post user --> post, post
         // not user --> post user --> post
         // Whats happening is I am skipping the uid and going striagth to posts
+
+        var post = snapshot.val().body;
+        var author = snapshot.val().author;
       });
+
     }
 
 
